@@ -13,4 +13,5 @@ source "drivers/sensor/maxim/max31865/Kconfig"
 source "drivers/sensor/maxim/max31875/Kconfig"
 source "drivers/sensor/maxim/max44009/Kconfig"
 source "drivers/sensor/maxim/max6675/Kconfig"
+source "drivers/sensor/maxim/max31856/Kconfig"
 # zephyr-keep-sorted-stop

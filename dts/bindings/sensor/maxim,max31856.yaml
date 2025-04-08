@@ -1,0 +1,80 @@
+# Copyright (c) 2022, HAW Hamburg FTZ-DIWIP
+# SPDX-License-Identifier: Apache-2.0
+
+
+description: |
+  Maxim MAX31856   SPI RTD-to-Digital Converter Temperature Sensor.
+  Find the datasheet here:
+  https://www.analog.com/media/en/technical-documentation/data-sheets/max31856.pdf
+
+compatible: "maxim,max31856"
+
+include: [sensor-device.yaml, spi-device.yaml]
+
+properties:
+
+  conversion-mode:
+    type: boolean
+    default: false
+    description: Conversions take place every 100ms
+
+  one-shot:
+    type: boolean
+    default: false
+    description: Conversions take place when requested
+
+  cold-junction:
+    type: boolean
+    default: true
+    description: Enable cold junction sensor
+
+  thermocouple-type:
+    type: int
+    default: 0b0011
+    description: Check datasheet for this value
+
+  averaging-mode:
+    type: int
+    default: 0b0000
+    description: Check datasheet for this value
+
+  fault-interrupt-mode:
+    type: boolean
+    default: n
+    description: When disabled fault bit works in comparator mode, when enabled the fault bit has to be cleared manually
+
+  filter-50hz:
+    type: boolean
+    default: n
+
+  fault-mask:
+    type: int
+    default: 0b00111111
+    description: Check datasheet for this value
+
+  cj-high-fault:
+    type: int
+    default: 0x7F
+
+  cj-low-fault:
+    type: int
+    default: 0xC0
+
+  lt-high-fault:
+    type: int
+    default: 0x7FFF
+
+  lt-low-fault:
+    type: int
+    default: 0x8000
+
+  cj-offset:
+    type: int
+    default: 0
+
+  fault-pin:
+    type: phandles
+
+  drdy-pin:
+    type: phandles
+

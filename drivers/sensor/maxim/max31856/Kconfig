@@ -1,0 +1,12 @@
+# MAX31865 temperature sensor configuration options
+
+# Copyright (c) 2022 HAW Hamburg FTZ-DIWIP
+# SPDX-License-Identifier: Apache-2.0
+
+config MAX31856
+	bool "MAX31856 Temperature Sensor"
+	default y
+	depends on DT_HAS_MAXIM_MAX31856_ENABLED
+	select SPI
+	help
+	  Enable the driver for Maxim MAX31856 SPI Temperature Sensors.
