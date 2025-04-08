@@ -3,7 +3,7 @@
 
 
 description: |
-  Maxim MAX31856   SPI RTD-to-Digital Converter Temperature Sensor.
+  Maxim MAX31856 SPI Thermocouple Temperature Sensor.
   Find the datasheet here:
   https://www.analog.com/media/en/technical-documentation/data-sheets/max31856.pdf
 
@@ -15,17 +15,14 @@ properties:
 
   conversion-mode:
     type: boolean
-    default: false
     description: Conversions take place every 100ms
 
   one-shot:
     type: boolean
-    default: false
     description: Conversions take place when requested
 
   cold-junction:
     type: boolean
-    default: true
     description: Enable cold junction sensor
 
   thermocouple-type:
@@ -40,12 +37,10 @@ properties:
 
   fault-interrupt-mode:
     type: boolean
-    default: n
     description: When disabled fault bit works in comparator mode, when enabled the fault bit has to be cleared manually
 
   filter-50hz:
     type: boolean
-    default: n
 
   fault-mask:
     type: int
@@ -73,8 +68,8 @@ properties:
     default: 0
 
   fault-pin:
-    type: phandles
+    type: phandle
 
   drdy-pin:
-    type: phandles
+    type: phandle
 
