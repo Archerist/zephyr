@@ -39,8 +39,8 @@ struct max31856_data {
  */
 struct max31856_config {
 	const struct spi_dt_spec spi;
-	const struct gpio_dt_spec fault_pin;
-	const struct gpio_dt_spec drdy_pin;
+	const struct gpio_dt_spec fault_gpios;
+	const struct gpio_dt_spec drdy_gpios;
 	bool conversion_mode;
 	bool one_shot;
 	uint8_t thermocouple_type;

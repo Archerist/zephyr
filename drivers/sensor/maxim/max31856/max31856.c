@@ -129,7 +129,7 @@ static int max31856_get_temperature(const struct device *dev)
 	/* Maximum Waiting Time for Temperature Conversion (Page 4 of the datasheet)*/
 	k_sleep(K_MSEC(185));
 
-	if (gpio_pin_get_dt(&config->fault_pin)){
+	if (gpio_pin_get_dt(&config->fault_gpios)){
 		max31856_fault_register(dev);
 		return -EIO;
 	}
@@ -223,8 +223,8 @@ static DEVICE_API(sensor, max31856_api_funcs) = {
                                                                                                    \
 	static const struct max31856_config max31856_config_##inst = {                             \
 		.spi = SPI_DT_SPEC_INST_GET(inst, SPI_MODE_CPHA | SPI_WORD_SET(8), 0),             \
-		.fault_pin = DT_INST_PROP(inst, fault_pin),                      \
-		.drdy_pin = DT_INST_PROP(inst, drdy_pin),                  \
+		.fault_gpios =   GPIO_DT_SPEC_INST_GET(inst, fault_gpios),                      \
+		.drdy_gpios = GPIO_DT_SPEC_INST_GET(inst, drdy_gpios),                  \
 		.conversion_mode = false,                                                          \
 		.one_shot = true,                                      \
 		.filter_50hz = DT_INST_PROP(inst, filter_50hz),                                    \
@@ -239,24 +239,6 @@ static DEVICE_API(sensor, max31856_api_funcs) = {
 	SENSOR_DEVICE_DT_INST_DEFINE(inst, max31856_init, NULL, &max31856_data_##inst,             \
 			      &max31856_config_##inst, POST_KERNEL, CONFIG_SENSOR_INIT_PRIORITY,   \
 			      &max31856_api_funcs);
-/*
-struct max31856_config {
-	const struct spi_dt_spec spi;
-	const struct gpio_dt_spec fault_pin;
-	const struct gpio_dt_spec drdy_pin;
-	bool conversion_mode;
-	bool one_shot;
-	uint8_t thermocouple_type;
-	uint8_t averaging_mode;
-	bool filter_50hz;
-	bool fault_interrupt_mode;
-	bool cold_junction;
-	uint8_t fault_mask;
-	int8_t cj_offset;
-	int8_t cj_low_fault;
-	int8_t cj_high_fault;
-	int16_t lt_low_fault;
-	int16_t lt_high_fault;
-};*/
+
 /* Create the struct device for every status "okay" node in the devicetree. */
 DT_INST_FOREACH_STATUS_OKAY(MAX31856_DEFINE)
