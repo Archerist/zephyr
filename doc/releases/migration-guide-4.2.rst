@@ -120,6 +120,15 @@ Ethernet
 * Removed Kconfig option ``ETH_STM32_HAL_MII`` (:github:`86074`).
   PHY interface type is now selected via the ``phy-connection-type`` property in the device tree.
 
+* The :dtcompatible:`st,stm32-ethernet` driver now requires the ``phy-handle`` phandle to be
+  set to the according PHY node in the device tree (:github:`87593`).
+
+* The Kconfig options ``ETH_STM32_HAL_PHY_ADDRESS``, ``ETH_STM32_CARRIER_CHECK``,
+  ``ETH_STM32_CARRIER_CHECK_RX_IDLE_TIMEOUT_MS``, ``ETH_STM32_AUTO_NEGOTIATION_ENABLE``,
+  ``ETH_STM32_SPEED_10M``, ``ETH_STM32_MODE_HALFDUPLEX`` have been removed, as they are no longer
+  needed, and the driver now uses the ethernet phy api to communicate with the phy driver, which
+  is resposible for configuring the phy settings (:github:`87593`).
+
 * ``ethernet_native_posix`` has been renamed ``ethernet_native_tap``, and with it its
   kconfig options: :kconfig:option:`CONFIG_ETH_NATIVE_POSIX` and its related options have been
   deprecated in favor of :kconfig:option:`CONFIG_ETH_NATIVE_TAP` (:github:`86578`).
@@ -139,11 +148,19 @@ Enhanced Serial Peripheral Interface (eSPI)
 GPIO
 ====
 
-* To support the RP2350B, which has many pins, the RaspberryPi-GPIO configuration has
+* To support the RP2350B, which has many pins, the Raspberry Pi-GPIO configuration has
   been changed. The previous role of :dtcompatible:`raspberrypi,rpi-gpio` has been migrated to
   :dtcompatible:`raspberrypi,rpi-gpio-port`, and :dtcompatible:`raspberrypi,rpi-gpio` is
   now left as a placeholder and mapper.
   The labels have also been changed along, so no changes are necessary for regular use.
+
+Sensors
+=======
+
+* ``ltr`` vendor prefix has been renamed to ``liteon``, and with it the
+  :dtcompatible:`ltr,f216a` name has been replaced by :dtcompatible:`liteon,ltrf216a`.
+  The choice :kconfig:option:`DT_HAS_LTR_F216A_ENABLED` has been replaced with
+  :kconfig:option:`DT_HAS_LITEON_LTRF216A_ENABLED` (:github:`85453`)
 
 Serial
 =======
@@ -179,6 +196,12 @@ Modem
   :kconfig:option:`CONFIG_MODEM_CMUX_WORK_BUFFER_SIZE` and :kconfig:option:`CONFIG_MODEM_CMUX_MTU`.
 
 
+Stepper
+=======
+
+* Refactored the ``stepper_enable(const struct device * dev, bool enable)`` function to
+  :c:func:`stepper_enable` & :c:func:`stepper_disable`.
+
 Bluetooth
 *********
 
@@ -204,6 +227,13 @@ Bluetooth Host
   each role may be different. Any existing uses/checks for ``BT_ISO_CHAN_TYPE_CONNECTED``
   can be replaced with an ``||`` of the two. (:github:`75549`)
 
+Bluetooth Classic
+=================
+
+* The parameters of HFP AG callback ``sco_disconnected`` of the struct :c:struct:`bt_hfp_ag_cb`
+  have been changed to SCO connection object ``struct bt_conn *sco_conn`` and the disconnection
+  reason of the SCO connection ``uint8_t reason``.
+
 Networking
 **********
 
@@ -227,6 +257,16 @@ Networking
   now accepts additional ``param`` parameter to support MQTT 5.0 case. The parameter
   is optional and not used with older MQTT versions - MQTT 3.1.1 users should pass
   NULL as an argument.
+
+* The ``AF_PACKET/SOCK_RAW/IPPROTO_RAW`` socket combination is no longer supported,
+  as ``AF_PACKET`` sockets should only accept IEEE 802.3 protocol numbers. As an
+  alternative, ``AF_PACKET/SOCK_DGRAM/ETH_P_ALL`` or ``AF_INET(6)/SOCK_RAW/IPPROTO_IP``
+  sockets can be used, depending on the actual use case.
+
+* The HTTP server now respects the configured ``_concurrent`` and  ``_backlog`` values. Check that
+  you provide applicable values to :c:macro:`HTTP_SERVICE_DEFINE_EMPTY`,
+  :c:macro:`HTTPS_SERVICE_DEFINE_EMPTY`, :c:macro:`HTTP_SERVICE_DEFINE` and
+  :c:macro:`HTTPS_SERVICE_DEFINE`.
 
 SPI
 ===
